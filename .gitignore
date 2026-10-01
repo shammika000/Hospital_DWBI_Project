@@ -399,3 +399,26 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+
+# ==========================================
+# Hospital DWBI Project - Custom Ignore Rules
+# ==========================================
+
+# Raw Kaggle source datasets
+01_Source_Data/
+
+# SSIS generated deployment files
+*.ispac
+
+# SSIS user-specific project files
+*.dtproj.user
+
+# Temporary / backup files
+*.bak
+*.tmp
+
+# SQL Server database physical files
+*.mdf
+*.ldf
+*.ndf
