@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Load_DW"
   DTS:PackageType="5"
-  DTS:VersionBuild="51"
-  DTS:VersionGUID="{C12DE99E-8758-46EB-B0E0-0F2264ED3AB3}">
+  DTS:VersionBuild="52"
+  DTS:VersionGUID="{D186EF9E-4F1B-4254-8918-C4DE746C9FD1}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -6374,6 +6374,12 @@ AND NOT EXISTS
                       cachedName="DoctorKey"
                       externalMetadataColumnId="Package\DFT_Load_FactBilling\DEST_FactBilling.Inputs[OLE DB Destination Input].ExternalColumns[DoctorKey]"
                       lineageId="Package\DFT_Load_FactBilling\UNION_BillingFacts.Outputs[Union All Output 1].Columns[DoctorKey]" />
+                    <inputColumn
+                      refId="Package\DFT_Load_FactBilling\DEST_FactBilling.Inputs[OLE DB Destination Input].Columns[DRV_CSV_Billing_NullDepartment]"
+                      cachedDataType="i4"
+                      cachedName="DRV_CSV_Billing_NullDepartment"
+                      externalMetadataColumnId="Package\DFT_Load_FactBilling\DEST_FactBilling.Inputs[OLE DB Destination Input].ExternalColumns[DepartmentKey]"
+                      lineageId="Package\DFT_Load_FactBilling\UNION_BillingFacts.Outputs[Union All Output 1].Columns[DRV_CSV_Billing_NullDepartment]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -9334,6 +9340,19 @@ WHERE NOT EXISTS
                           dataType="System.Int32"
                           description="Output column lineage ID"
                           name="OutputColumnLineageID">#{Package\DFT_Load_FactBilling\UNION_BillingFacts.Outputs[Union All Output 1].Columns[DoctorKey]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\DFT_Load_FactBilling\UNION_BillingFacts.Inputs[Union All Input 2].Columns[DepartmentKey]"
+                      cachedDataType="i4"
+                      cachedName="DepartmentKey"
+                      lineageId="Package\DFT_Load_FactBilling\LKP_XLSX_Billing_Department.Outputs[Lookup Match Output].Columns[DepartmentKey]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\DFT_Load_FactBilling\UNION_BillingFacts.Outputs[Union All Output 1].Columns[DRV_CSV_Billing_NullDepartment]}</property>
                       </properties>
                     </inputColumn>
                   </inputColumns>
