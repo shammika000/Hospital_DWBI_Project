@@ -1,0 +1,450 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1700,
+  "model": {
+    "culture": "en-US",
+    "discourageImplicitMeasures": true,
+    "dataSources": [
+      {
+        "type": "provider",
+        "name": "Hospital_Finance_DM",
+        "connectionString": "Provider=MSOLEDBSQL;Data Source=LAPTOP-FJP15H44;Initial Catalog=Hospital_Finance_DM;Integrated Security=SSPI;Encrypt=Optional;TrustServerCertificate=Yes;",
+        "impersonationMode": "impersonateServiceAccount"
+      }
+    ],
+    "tables": [
+      {
+        "name": "DimHospitalSource",
+        "columns": [
+          {
+            "name": "HospitalSourceKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "HospitalSourceKey"
+          },
+          {
+            "name": "SourceSystemCode",
+            "dataType": "string",
+            "sourceColumn": "SourceSystemCode"
+          },
+          {
+            "name": "SourceSystemName",
+            "dataType": "string",
+            "sourceColumn": "SourceSystemName"
+          },
+          {
+            "name": "SourceFormat",
+            "dataType": "string",
+            "sourceColumn": "SourceFormat"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "dataSource": "Hospital_Finance_DM",
+              "query": "SELECT * FROM dbo.DimHospitalSource"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimDate",
+        "columns": [
+          {
+            "name": "DateKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "DateKey"
+          },
+          {
+            "name": "FullDate",
+            "dataType": "dateTime",
+            "sourceColumn": "FullDate"
+          },
+          {
+            "name": "DayNumber",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "DayNumber"
+          },
+          {
+            "name": "MonthNumber",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "MonthNumber"
+          },
+          {
+            "name": "MonthName",
+            "dataType": "string",
+            "sourceColumn": "MonthName",
+            "sortByColumn": "MonthNumber"
+          },
+          {
+            "name": "QuarterNumber",
+            "dataType": "int64",
+            "sourceColumn": "QuarterNumber"
+          },
+          {
+            "name": "YearNumber",
+            "dataType": "int64",
+            "sourceColumn": "YearNumber"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "dataSource": "Hospital_Finance_DM",
+              "query": "SELECT * FROM dbo.DimDate"
+            }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Date Hierarchy",
+            "levels": [
+              {
+                "name": "YearNumber",
+                "ordinal": 0,
+                "column": "YearNumber"
+              },
+              {
+                "name": "QuarterNumber",
+                "ordinal": 1,
+                "column": "QuarterNumber"
+              },
+              {
+                "name": "MonthName",
+                "ordinal": 2,
+                "column": "MonthName"
+              },
+              {
+                "name": "FullDate",
+                "ordinal": 3,
+                "column": "FullDate"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "DimPatientFinance",
+        "columns": [
+          {
+            "name": "PatientKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "PatientKey"
+          },
+          {
+            "name": "Gender",
+            "dataType": "string",
+            "sourceColumn": "Gender"
+          },
+          {
+            "name": "City",
+            "dataType": "string",
+            "sourceColumn": "City"
+          },
+          {
+            "name": "InsuranceProvider",
+            "dataType": "string",
+            "sourceColumn": "InsuranceProvider"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "dataSource": "Hospital_Finance_DM",
+              "query": "SELECT * FROM dbo.DimPatientFinance"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimDoctorFinance",
+        "columns": [
+          {
+            "name": "DoctorKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "DoctorKey"
+          },
+          {
+            "name": "DoctorName",
+            "dataType": "string",
+            "sourceColumn": "DoctorName"
+          },
+          {
+            "name": "Specialization",
+            "dataType": "string",
+            "sourceColumn": "Specialization"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "dataSource": "Hospital_Finance_DM",
+              "query": "SELECT * FROM dbo.DimDoctorFinance"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimDepartmentFinance",
+        "columns": [
+          {
+            "name": "DepartmentKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "DepartmentKey"
+          },
+          {
+            "name": "DepartmentName",
+            "dataType": "string",
+            "sourceColumn": "DepartmentName"
+          },
+          {
+            "name": "FloorNumber",
+            "dataType": "int64",
+            "sourceColumn": "FloorNumber"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "dataSource": "Hospital_Finance_DM",
+              "query": "SELECT * FROM dbo.DimDepartmentFinance"
+            }
+          }
+        ]
+      },
+      {
+        "name": "FactFinanceBilling",
+        "columns": [
+          {
+            "name": "BillingFactKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "BillingFactKey"
+          },
+          {
+            "name": "HospitalSourceKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "HospitalSourceKey"
+          },
+          {
+            "name": "PatientKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "PatientKey"
+          },
+          {
+            "name": "DoctorKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "DoctorKey"
+          },
+          {
+            "name": "DepartmentKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "DepartmentKey"
+          },
+          {
+            "name": "EncounterDateKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "EncounterDateKey"
+          },
+          {
+            "name": "BillingDateKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "BillingDateKey"
+          },
+          {
+            "name": "ReportingDateKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "ReportingDateKey"
+          },
+          {
+            "name": "SourceBillID",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "SourceBillID"
+          },
+          {
+            "name": "PaymentMethod",
+            "dataType": "string",
+            "sourceColumn": "PaymentMethod"
+          },
+          {
+            "name": "PaymentStatus",
+            "dataType": "string",
+            "sourceColumn": "PaymentStatus"
+          },
+          {
+            "name": "TotalBill",
+            "dataType": "double",
+            "sourceColumn": "TotalBill"
+          },
+          {
+            "name": "InsuranceCover",
+            "dataType": "double",
+            "sourceColumn": "InsuranceCover"
+          },
+          {
+            "name": "FinalAmountPayable",
+            "dataType": "double",
+            "sourceColumn": "FinalAmountPayable"
+          },
+          {
+            "name": "EMIMonths",
+            "dataType": "int64",
+            "sourceColumn": "EMIMonths"
+          },
+          {
+            "name": "MonthlyEMI",
+            "dataType": "double",
+            "sourceColumn": "MonthlyEMI"
+          },
+          {
+            "name": "BillingCount",
+            "dataType": "int64",
+            "sourceColumn": "BillingCount"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "dataSource": "Hospital_Finance_DM",
+              "query": "SELECT * FROM dbo.FactFinanceBilling"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Total Billing",
+            "expression": [
+              "",
+              "SUM(FactFinanceBilling[TotalBill])"
+            ]
+          },
+          {
+            "name": "Billing Records",
+            "expression": [
+              "",
+              "SUM(FactFinanceBilling[BillingCount])",
+              ""
+            ]
+          },
+          {
+            "name": "Total Insurance Cover",
+            "expression": [
+              "",
+              "SUM(FactFinanceBilling[InsuranceCover])"
+            ]
+          },
+          {
+            "name": "Total Final Payable",
+            "expression": [
+              "",
+              "SUM(FactFinanceBilling[FinalAmountPayable])"
+            ]
+          },
+          {
+            "name": "Average Bill",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "    [Total Billing],",
+              "    [Billing Records],",
+              "    0",
+              ")"
+            ]
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "c2ad39fd-c715-4c9e-86f8-98057925ed8d",
+        "fromTable": "FactFinanceBilling",
+        "fromColumn": "BillingDateKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey",
+        "isActive": false
+      },
+      {
+        "name": "32775904-cb8b-4422-b868-5e90d9b42382",
+        "fromTable": "FactFinanceBilling",
+        "fromColumn": "HospitalSourceKey",
+        "toTable": "DimHospitalSource",
+        "toColumn": "HospitalSourceKey"
+      },
+      {
+        "name": "d2efb9c0-a7bf-4488-9341-9db48c4bf2a7",
+        "fromTable": "FactFinanceBilling",
+        "fromColumn": "PatientKey",
+        "toTable": "DimPatientFinance",
+        "toColumn": "PatientKey"
+      },
+      {
+        "name": "f3d4f809-fd9d-4e13-888a-225bf59425dd",
+        "fromTable": "FactFinanceBilling",
+        "fromColumn": "DoctorKey",
+        "toTable": "DimDoctorFinance",
+        "toColumn": "DoctorKey"
+      },
+      {
+        "name": "5df431fc-a476-4d19-a7ed-b4beb8fdfc6e",
+        "fromTable": "FactFinanceBilling",
+        "fromColumn": "DepartmentKey",
+        "toTable": "DimDepartmentFinance",
+        "toColumn": "DepartmentKey"
+      },
+      {
+        "name": "b0b25ab8-d2e7-4436-8f2d-e09ac679073b",
+        "fromTable": "FactFinanceBilling",
+        "fromColumn": "EncounterDateKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey",
+        "isActive": false
+      },
+      {
+        "name": "877fb973-70d7-4867-9dd5-599e0afec56a",
+        "fromTable": "FactFinanceBilling",
+        "fromColumn": "ReportingDateKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "800"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
